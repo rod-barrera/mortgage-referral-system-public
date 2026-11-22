@@ -1,0 +1,13 @@
+{
+  "name": "mortgage-referral-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Recursos de interfaz del seguimiento de consultas hipotecarias",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "check": "tsc --project tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editar cuenta de ejecutivo | Seguimiento hipotecario</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+  <a class="skip-link" href="#content">Ir al contenido</a>
+  <div th:replace="~{fragments :: header(${account}, 'users')}"></div>
+  <main id="content" class="page-shell" tabindex="-1">
+    <a class="back-link" th:href="@{/users}">Volver a cuentas de ejecutivos</a>
+    <div class="page-heading">
+      <div>
+        <h1>Editar cuenta de ejecutivo</h1>
+        <p class="section-description" th:text="${targetAccount.name}">Nombre del ejecutivo</p>
+      </div>
+    </div>
+    <section class="panel account-editor" aria-labelledby="edit-user-title">
+      <div class="panel-heading"><h2 id="edit-user-title">Datos de la cuenta</h2></div>
+      <form th:action="@{/users/{id}/edit(id=${targetAccount.id})}" th:object="${form}" method="post" class="panel-body form-stack">
+        <div class="alert alert-error form-alert" th:if="${#fields.hasGlobalErrors()}" role="alert">
+          <p th:each="error : ${#fields.globalErrors()}" th:text="${error}">Revisa los datos de la cuenta.</p>
+        </div>
+        <div class="field">
+          <label for="name">Nombre completo</label>
+          <input id="name" th:field="*{name}" type="text" required maxlength="120" autocomplete="off"
+                 th:errorclass="is-invalid"
+                 th:attr="aria-invalid=${#fields.hasErrors('name')},aria-describedby=${#fields.hasErrors('name') ? 'name-error' : null}">
+          <p id="name-error" class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Revisa el nombre.</p>
+        </div>
+        <div class="field">
+          <label for="email">Correo electrónico</label>
+          <input id="email" th:field="*{email}" type="email" required maxlength="254" autocomplete="off"
+                 inputmode="email" autocapitalize="none" spellcheck="false" th:errorclass="is-invalid"
+                 th:attr="aria-invalid=${#fields.hasErrors('email')},aria-describedby=${#fields.hasErrors('email') ? 'email-help email-error' : 'email-help'}">
+          <p id="email-help" class="field-help">El ejecutivo usa este correo para iniciar sesión.</p>
+          <p id="email-error" class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Revisa el correo.</p>
+        </div>
+        <div class="form-actions">
+          <button class="button button-primary" type="submit">Guardar cambios</button>
+          <a class="button button-secondary" th:href="@{/users}">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+  <div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

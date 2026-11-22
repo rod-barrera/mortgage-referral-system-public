@@ -1,0 +1,17 @@
+.gradle/
+build/
+node_modules/
+.idea/
+*.iml
+.env
+.env.*
+!.env.example
+.local/
+src/main/resources/application-local.*
+*.log
+*.dump
+__pycache__/
+*.py[cod]
+src/main/resources/static/js/
+docs/evidence/screenshots/neon-tables.jpg
+docs/evaluation-2-requirements.md

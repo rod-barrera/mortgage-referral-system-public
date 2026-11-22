@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="650" viewBox="0 0 1000 650" role="img">
+<title>Arquitectura física local y despliegue en Render y Neon</title>
+<desc>Arquitectura física de la aplicación local y del servicio publicado en Render con PostgreSQL en Neon.</desc>
+<defs>
+  <marker id="end" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#243B53"/></marker>
+  <marker id="begin" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M8 0 L0 4 L8 8 Z" fill="#243B53"/></marker>
+</defs>
+<rect width="1000" height="650" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#243B53">
+<text x="30" y="34" font-size="25" font-weight="700" text-anchor="start" fill="#243B53">
+<tspan x="30" y="34">Arquitectura física</tspan>
+</text>
+<rect x="20" y="58" width="960" height="245" rx="12" fill="#FAFCFE" stroke="#243B53" stroke-width="1.5"/>
+<text x="40" y="89" font-size="21" font-weight="700" text-anchor="start" fill="#243B53">
+<tspan x="40" y="89">Entorno local Windows</tspan>
+</text>
+<rect x="40" y="132" width="195" height="113" rx="8" fill="#EAF2FA" stroke="#243B53" stroke-width="1.6"/>
+<text x="137.5" y="161" font-size="18" font-weight="700" text-anchor="middle" fill="#243B53">
+<tspan x="137.5" y="161">Navegador</tspan>
+</text>
+<text x="137.5" y="187" font-size="17" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="137.5" y="187">Ejecutivo</tspan>
+<tspan x="137.5" y="210">Supervisora</tspan>
+</text>
+<rect x="355" y="132" width="270" height="113" rx="8" fill="#EAF2FA" stroke="#243B53" stroke-width="1.6"/>
+<text x="490.0" y="161" font-size="18" font-weight="700" text-anchor="middle" fill="#243B53">
+<tspan x="490.0" y="161">Aplicación Java</tspan>
+</text>
+<text x="490.0" y="187" font-size="17" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="490.0" y="187">Spring Boot · Java 21</tspan>
+<tspan x="490.0" y="210">Puerto local 8080</tspan>
+</text>
+<rect x="745" y="132" width="215" height="113" rx="8" fill="#EDF7EE" stroke="#243B53" stroke-width="1.6"/>
+<text x="852.5" y="161" font-size="18" font-weight="700" text-anchor="middle" fill="#243B53">
+<tspan x="852.5" y="161">PostgreSQL 17.11</tspan>
+</text>
+<text x="852.5" y="187" font-size="17" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="852.5" y="187">Implementado</tspan>
+<tspan x="852.5" y="210">Puerto 5432</tspan>
+</text>
+<path d="M235 188 H352" fill="none" stroke="#243B53" stroke-width="1.8"/>
+<text x="295" y="174" font-size="15" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="295" y="174">HTTP local</tspan>
+</text>
+<path d="M625 188 H742" fill="none" stroke="#243B53" stroke-width="1.8"/>
+<text x="685" y="174" font-size="15" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="685" y="174">JDBC local</tspan>
+</text>
+<text x="40" y="281" font-size="16" font-weight="400" text-anchor="start" fill="#243B53">
+<tspan x="40" y="281">Herramientas verificadas: JDK 21.0.10 y Gradle 8.14.2. Base: mortgage_referrals_eval2.</tspan>
+</text>
+<rect x="20" y="326" width="960" height="245" rx="12" fill="#FAFCFE" stroke="#243B53" stroke-width="1.5"/>
+<text x="40" y="357" font-size="21" font-weight="700" text-anchor="start" fill="#243B53">
+<tspan x="40" y="357">Despliegue verificado en Render y Neon</tspan>
+</text>
+<rect x="40" y="400" width="195" height="113" rx="8" fill="#EAF2FA" stroke="#243B53" stroke-width="1.6"/>
+<text x="137.5" y="429" font-size="18" font-weight="700" text-anchor="middle" fill="#243B53">
+<tspan x="137.5" y="429">Navegador remoto</tspan>
+</text>
+<text x="137.5" y="455" font-size="17" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="137.5" y="455">Ejecutivo</tspan>
+<tspan x="137.5" y="478">Supervisora</tspan>
+</text>
+<rect x="355" y="400" width="270" height="113" rx="8" fill="#EAF2FA" stroke="#243B53" stroke-width="1.6"/>
+<text x="490.0" y="429" font-size="18" font-weight="700" text-anchor="middle" fill="#243B53">
+<tspan x="490.0" y="429">Render Free</tspan>
+</text>
+<text x="490.0" y="455" font-size="17" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="490.0" y="455">Docker · Spring Boot · Java 21</tspan>
+<tspan x="490.0" y="478">Virginia · puerto 10000</tspan>
+</text>
+<rect x="745" y="400" width="215" height="113" rx="8" fill="#EDF7EE" stroke="#243B53" stroke-width="1.6"/>
+<text x="852.5" y="429" font-size="18" font-weight="700" text-anchor="middle" fill="#243B53">
+<tspan x="852.5" y="429">Neon</tspan>
+</text>
+<text x="852.5" y="455" font-size="17" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="852.5" y="455">PostgreSQL 17.11</tspan>
+<tspan x="852.5" y="478">8 tablas · rol restringido</tspan>
+</text>
+<path d="M235 456 H352" fill="none" stroke="#243B53" stroke-width="1.8"/>
+<text x="295" y="442" font-size="15" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="295" y="442">HTTPS</tspan>
+</text>
+<path d="M625 456 H742" fill="none" stroke="#243B53" stroke-width="1.8"/>
+<text x="685" y="442" font-size="15" font-weight="400" text-anchor="middle" fill="#243B53">
+<tspan x="685" y="442">JDBC + TLS</tspan>
+</text>
+<text x="40" y="549" font-size="16" font-weight="400" text-anchor="start" fill="#243B53">
+<tspan x="40" y="549">Acceso por HTTPS y conexión TLS a Neon. Credenciales fuera del código.</tspan>
+</text>
+<text x="30" y="612" font-size="17" font-weight="400" text-anchor="start" fill="#243B53">
+<tspan x="30" y="612">Flujo hipotecario publicado y verificado por HTTPS.</tspan>
+</text>
+<polygon points="235,188 243,184 243,192" fill="#243B53"/><polygon points="352,188 344,184 344,192" fill="#243B53"/><polygon points="625,188 633,184 633,192" fill="#243B53"/><polygon points="742,188 734,184 734,192" fill="#243B53"/><polygon points="235,456 243,452 243,460" fill="#243B53"/><polygon points="352,456 344,452 344,460" fill="#243B53"/><polygon points="625,456 633,452 633,460" fill="#243B53"/><polygon points="742,456 734,452 734,460" fill="#243B53"/></g></svg>

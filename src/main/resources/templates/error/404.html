@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Página no disponible | Seguimiento hipotecario</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="message-page">
+  <main class="message-card" aria-labelledby="page-title">
+    <span class="brand-mark" aria-hidden="true">SH</span>
+    <p class="eyebrow">Error 404</p>
+    <h1 id="page-title">Página no disponible</h1>
+    <p>La página que buscas no está disponible.</p>
+    <a class="button button-primary" th:href="@{/}">Volver a la bandeja</a>
+  </main>
+</body>
+</html>

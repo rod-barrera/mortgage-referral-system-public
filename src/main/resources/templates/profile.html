@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi perfil | Seguimiento hipotecario</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <script defer th:src="@{/js/app.js}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Ir al contenido</a>
+  <div th:replace="~{fragments :: header(${account}, 'profile')}"></div>
+  <main id="content" class="page-shell" tabindex="-1">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow" th:text="${account.role == 'SUPERVISOR' ? 'Supervisora' : 'Ejecutivo'}">Ejecutivo</p>
+        <h1>Mi perfil</h1>
+      </div>
+    </div>
+    <div class="alert alert-success" th:if="${param.updated != null}" role="status">Tus datos se actualizaron correctamente.</div>
+    <div class="case-layout">
+      <section class="panel" aria-labelledby="profile-details-title">
+        <div class="panel-heading"><h2 id="profile-details-title">Datos personales</h2></div>
+        <form th:action="@{/profile}" th:object="${detailsForm}" method="post" class="panel-body form-stack">
+          <div class="alert alert-error form-alert" th:if="${#fields.hasGlobalErrors()}" role="alert">
+            <p th:each="error : ${#fields.globalErrors()}" th:text="${error}">Revisa tus datos personales.</p>
+          </div>
+          <div class="field">
+            <label for="name">Nombre completo</label>
+            <input id="name" th:field="*{name}" type="text" required maxlength="120" autocomplete="name"
+                   th:errorclass="is-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('name')},aria-describedby=${#fields.hasErrors('name') ? 'name-error' : null}">
+            <p id="name-error" class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Revisa el nombre.</p>
+          </div>
+          <div class="field">
+            <label for="email">Correo electrónico</label>
+            <input id="email" th:field="*{email}" type="email" required maxlength="254" autocomplete="email"
+                   inputmode="email" autocapitalize="none" spellcheck="false" th:errorclass="is-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('email')},aria-describedby=${#fields.hasErrors('email') ? 'email-help email-error' : 'email-help'}">
+            <p id="email-help" class="field-help">Si cambias tu correo, tendrás que volver a iniciar sesión.</p>
+            <p id="email-error" class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Revisa el correo.</p>
+          </div>
+          <div class="form-actions"><button class="button button-primary" type="submit">Guardar mis datos</button></div>
+        </form>
+      </section>
+      <section class="panel" aria-labelledby="profile-password-title">
+        <div class="panel-heading"><h2 id="profile-password-title">Cambiar contraseña</h2></div>
+        <form th:action="@{/profile/password}" th:object="${passwordForm}" method="post" class="panel-body form-stack">
+          <div class="alert alert-error form-alert" th:if="${#fields.hasGlobalErrors()}" role="alert">
+            <p th:each="error : ${#fields.globalErrors()}" th:text="${error}">Revisa la información ingresada.</p>
+          </div>
+          <div class="field">
+            <label for="current-password">Contraseña actual</label>
+            <input id="current-password" name="currentPassword" type="password" required maxlength="72" autocomplete="current-password"
+                   th:classappend="${#fields.hasErrors('currentPassword')} ? 'is-invalid'"
+                   th:attr="aria-invalid=${#fields.hasErrors('currentPassword')},aria-describedby=${#fields.hasErrors('currentPassword') ? 'current-password-error' : null}">
+            <p id="current-password-error" class="field-error" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}">Revisa la contraseña actual.</p>
+          </div>
+          <div class="field">
+            <label for="new-password">Contraseña nueva</label>
+            <div class="password-control">
+              <input id="new-password" name="newPassword" type="password" required minlength="10" maxlength="72" autocomplete="new-password"
+                     th:classappend="${#fields.hasErrors('newPassword')} ? 'is-invalid'"
+                     th:attr="aria-invalid=${#fields.hasErrors('newPassword')},aria-describedby=${#fields.hasErrors('newPassword') ? 'new-password-help new-password-error' : 'new-password-help'}">
+              <button class="password-toggle" type="button" data-toggle-password="new-password" aria-controls="new-password" aria-pressed="false" aria-label="Mostrar contraseña" hidden>Mostrar</button>
+            </div>
+            <p id="new-password-help" class="field-help">Usa al menos 10 caracteres.</p>
+            <p id="new-password-error" class="field-error" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">Revisa la nueva contraseña.</p>
+          </div>
+          <div class="field">
+            <label for="confirm-password">Confirma la contraseña nueva</label>
+            <input id="confirm-password" name="confirmPassword" type="password" required maxlength="72" autocomplete="new-password"
+                   th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'"
+                   th:attr="aria-invalid=${#fields.hasErrors('confirmPassword')},aria-describedby=${#fields.hasErrors('confirmPassword') ? 'confirm-password-error' : null}">
+            <p id="confirm-password-error" class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Revisa la confirmación.</p>
+          </div>
+          <p class="field-help">Al guardar una contraseña nueva, se cerrará tu sesión.</p>
+          <div class="form-actions"><button class="button button-primary" type="submit">Guardar contraseña</button></div>
+        </form>
+      </section>
+    </div>
+  </main>
+  <div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

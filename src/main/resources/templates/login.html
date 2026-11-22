@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acceder | Seguimiento hipotecario</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <script defer th:src="@{/js/app.js}"></script>
+</head>
+<body class="login-page">
+  <a class="skip-link" href="#access">Ir al formulario de acceso</a>
+  <main class="login-shell">
+    <section class="login-context" aria-labelledby="system-name">
+      <div class="brand brand-light"><span class="brand-mark" aria-hidden="true">SH</span><span id="system-name">Seguimiento<span class="brand-subtitle">hipotecario</span></span></div>
+      <div class="login-intro"><p class="eyebrow">Consultas hipotecarias</p><h1>El seguimiento de tus derivaciones, en un solo lugar.</h1><p>Consulta los casos asignados y mantén la continuidad de cada atención.</p></div>
+      <p class="login-context-footer">Acceso para ejecutivos y supervisión</p>
+    </section>
+    <section class="login-form-panel" id="access" aria-labelledby="login-title">
+      <p class="eyebrow">Acceso a tu cuenta</p>
+      <h2 id="login-title">Iniciar sesión</h2>
+      <p class="section-description">Ingresa con tu correo y contraseña.</p>
+      <div class="alert alert-error" th:if="${param.error != null}" role="alert">El correo o la contraseña no son correctos, o la cuenta no está habilitada.</div>
+      <div class="alert alert-success" th:if="${param.logout != null}" role="status">Cerraste tu sesión correctamente.</div>
+      <div class="alert alert-success" th:if="${param.credentialsUpdated != null}" role="status">Tus datos de acceso se actualizaron. Inicia sesión con el correo y la contraseña vigentes.</div>
+      <div class="alert alert-notice" th:if="${param.disabled != null}" role="alert">Tu cuenta ya no está habilitada. Consulta con tu supervisora.</div>
+      <form th:action="@{/login}" method="post" class="form-stack">
+        <div class="field"><label for="username">Correo electrónico</label><input id="username" name="username" type="email" required maxlength="254" autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false"></div>
+        <div class="field"><label for="login-password">Contraseña</label><div class="password-control"><input id="login-password" name="password" type="password" required autocomplete="current-password"><button class="password-toggle" type="button" data-toggle-password="login-password" aria-controls="login-password" aria-pressed="false" aria-label="Mostrar contraseña" hidden>Mostrar</button></div></div>
+        <button class="button button-primary button-full" type="submit">Ingresar</button>
+      </form>
+      <p class="login-help">Si necesitas habilitar tu cuenta, consulta con tu supervisora.</p>
+    </section>
+  </main>
+</body>
+</html>

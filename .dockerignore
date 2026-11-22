@@ -1,0 +1,25 @@
+# Only include the files needed by the multi-stage build.
+**
+!Dockerfile
+!.dockerignore
+!build.gradle
+!settings.gradle
+!gradle.properties
+!gradlew
+!gradle/
+!gradle/**
+!package.json
+!package-lock.json
+!tsconfig.json
+!frontend/
+!frontend/**
+!src/
+!src/main/
+!src/main/**
+# Keep private local configuration and generated JavaScript out of the context.
+src/main/resources/application-local.*
+src/main/resources/static/js/
+**/.env
+**/.env.*
+**/*.log
+**/*.dump

@@ -1,0 +1,73 @@
+erDiagram
+    ROLE {
+        smallint role_id PK
+        varchar20 name UK
+    }
+    USER_ACCOUNT {
+        bigint user_id PK
+        smallint role_id FK
+        varchar120 name
+        varchar254 email UK
+        varchar255 password_hash
+        boolean active
+    }
+    LEAD {
+        bigint lead_id PK
+        varchar10 rut UK
+        varchar120 name
+        varchar30 phone "opcional"
+        varchar254 contact_email "opcional"
+    }
+    STATUS {
+        smallint status_id PK
+        varchar32 name UK
+        boolean is_final
+    }
+    STATUS_TRANSITION {
+        smallint from_status_id PK, FK
+        smallint to_status_id PK, FK
+    }
+    REFERRAL {
+        bigint referral_id PK
+        bigint lead_id FK
+        bigint executive_id FK "con executive_role"
+        bigint supervisor_id FK "con supervisor_role"
+        smallint current_status_id FK
+        text summary
+        timestamptz created_at
+        numeric12_2 property_value_uf "opcional"
+        numeric12_2 down_payment_uf "opcional"
+        smallint executive_role FK "generado con valor 1"
+        smallint supervisor_role FK "generado con valor 2"
+    }
+    FOLLOW_UP {
+        bigint follow_up_id PK
+        bigint referral_id FK
+        text description
+        timestamptz created_at
+        bigint author_id FK
+    }
+    STATUS_HISTORY {
+        bigint status_history_id PK
+        bigint referral_id FK
+        smallint previous_status_id FK "nulo solo al crear"
+        smallint new_status_id FK "par de transicion con estado anterior"
+        timestamptz changed_at
+        text comment
+        bigint author_id FK
+    }
+
+    ROLE ||--o{ USER_ACCOUNT : "define el perfil"
+    LEAD ||--o{ REFERRAL : "origina"
+    USER_ACCOUNT ||--o{ REFERRAL : "crea como ejecutivo"
+    USER_ACCOUNT ||--o{ REFERRAL : "recibe como supervisora"
+    STATUS ||--o{ REFERRAL : "estado actual"
+    REFERRAL ||--o{ FOLLOW_UP : "tiene"
+    USER_ACCOUNT ||--o{ FOLLOW_UP : "autora de gestion"
+    REFERRAL ||--|{ STATUS_HISTORY : "conserva desde la creacion"
+    USER_ACCOUNT ||--o{ STATUS_HISTORY : "autor de evento"
+    STATUS o|--o{ STATUS_HISTORY : "estado anterior"
+    STATUS ||--o{ STATUS_HISTORY : "estado nuevo"
+    STATUS ||--o{ STATUS_TRANSITION : "origen"
+    STATUS ||--o{ STATUS_TRANSITION : "destino"
+    STATUS_TRANSITION o|--o{ STATUS_HISTORY : "par permitido"

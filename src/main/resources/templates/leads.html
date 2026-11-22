@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interesados | Seguimiento hipotecario</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <script defer th:src="@{/js/app.js}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Ir al contenido</a>
+  <div th:replace="~{fragments :: header(${account}, 'leads')}"></div>
+  <main id="content" class="page-shell">
+    <div class="page-heading">
+      <div>
+        <h1>Interesados</h1>
+        <p class="section-description">Busca una ficha por RUT o registra a un interesado para crear su derivación.</p>
+      </div>
+    </div>
+    <div class="management-grid">
+      <section class="panel" aria-labelledby="lookup-title">
+        <div class="panel-heading"><h2 id="lookup-title">Buscar ficha</h2></div>
+        <form th:action="@{/leads}" method="get" class="form-stack panel-body">
+          <div class="field">
+            <label for="lookup-rut">RUT del interesado</label>
+            <input id="lookup-rut" name="rut" th:value="${lookupRut}" type="text" required maxlength="12"
+                   autocomplete="off" autocapitalize="characters" spellcheck="false"
+                   th:classappend="${lookupError != null} ? 'is-invalid'"
+                   th:attr="aria-invalid=${lookupError != null},aria-describedby=${lookupError != null ? 'lookup-error' : null}">
+            <p class="field-error" id="lookup-error" th:if="${lookupError != null}"
+               th:text="${lookupError}" role="alert">Revisa el RUT ingresado.</p>
+          </div>
+          <button class="button button-secondary" type="submit">Buscar por RUT</button>
+        </form>
+        <div th:if="${lookupMissing}" class="panel-body" role="status">
+          <p class="section-description">No encontramos una ficha con ese RUT. Puedes registrarla en el formulario.</p>
+        </div>
+        <div th:if="${lead != null}" class="panel-body form-stack">
+          <div>
+            <h3>Ficha encontrada</h3>
+            <strong class="table-name" th:text="${lead.name}">Nombre del interesado</strong>
+            <span class="table-detail" th:text="|RUT ${lead.rut}|">RUT</span>
+            <span class="table-detail" th:if="${lead.phone != null}" th:text="${lead.phone}">Teléfono</span>
+            <span class="table-detail" th:if="${lead.contactEmail != null}" th:text="${lead.contactEmail}">Correo</span>
+          </div>
+          <a class="button button-primary" th:href="@{/referrals/new(leadId=${lead.id})}">Usar esta ficha</a>
+        </div>
+      </section>
+      <section class="panel create-panel" aria-labelledby="register-title">
+        <div class="panel-heading">
+          <div>
+            <h2 id="register-title">Registrar interesado</h2>
+            <p class="section-description" id="lead-contact-help">Ingresa al menos un teléfono o correo.</p>
+          </div>
+        </div>
+        <form th:action="@{/leads}" th:object="${form}" method="post" class="form-stack panel-body">
+          <div class="alert alert-error" th:if="${#fields.hasGlobalErrors()}" role="alert">
+            <p th:each="error : ${#fields.globalErrors()}" th:text="${error}">Revisa los datos de la ficha.</p>
+          </div>
+          <div class="field">
+            <label for="lead-name">Nombre completo</label>
+            <input id="lead-name" th:field="*{name}" type="text" required maxlength="120" autocomplete="name"
+                   th:errorclass="is-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('name')},aria-describedby=${#fields.hasErrors('name') ? 'lead-name-error' : null}">
+            <p id="lead-name-error" class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Revisa el nombre.</p>
+          </div>
+          <div class="field">
+            <label for="lead-rut">RUT</label>
+            <input id="lead-rut" th:field="*{rut}" type="text" required maxlength="12"
+                   autocomplete="off" autocapitalize="characters" spellcheck="false" th:errorclass="is-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('rut')},aria-describedby=${#fields.hasErrors('rut') ? 'lead-rut-error' : null}">
+            <p id="lead-rut-error" class="field-error" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}">Revisa el RUT.</p>
+          </div>
+          <div class="field">
+            <label for="lead-phone">Teléfono</label>
+            <input id="lead-phone" th:field="*{phone}" type="tel" maxlength="30" autocomplete="tel" th:errorclass="is-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('phone')},aria-describedby=${#fields.hasErrors('phone') ? 'lead-contact-help lead-phone-error' : 'lead-contact-help'}">
+            <p id="lead-phone-error" class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Revisa el teléfono.</p>
+          </div>
+          <div class="field">
+            <label for="lead-email">Correo electrónico</label>
+            <input id="lead-email" th:field="*{contactEmail}" type="email" maxlength="254" autocomplete="email"
+                   autocapitalize="none" spellcheck="false" th:errorclass="is-invalid"
+                   th:attr="aria-invalid=${#fields.hasErrors('contactEmail')},aria-describedby=${#fields.hasErrors('contactEmail') ? 'lead-contact-help lead-email-error' : 'lead-contact-help'}">
+            <p id="lead-email-error" class="field-error" th:if="${#fields.hasErrors('contactEmail')}" th:errors="*{contactEmail}">Revisa el correo.</p>
+          </div>
+          <button class="button button-primary" type="submit">Guardar ficha y continuar</button>
+        </form>
+      </section>
+    </div>
+  </main>
+  <div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

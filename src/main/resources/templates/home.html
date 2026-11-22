@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi bandeja | Seguimiento hipotecario</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <script defer th:src="@{/js/app.js}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Ir al contenido</a>
+  <div th:replace="~{fragments :: header(${account}, 'home')}"></div>
+  <main id="content" class="page-shell">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow" th:text="${isSupervisor ? 'Supervisión' : 'Atención comercial'}">Atención comercial</p>
+        <h1>Mi bandeja</h1>
+        <p class="section-description" th:text="${isSupervisor ? 'Consulta las derivaciones dirigidas a ti.' : 'Consulta las derivaciones que has registrado.'}">Consulta tus derivaciones.</p>
+      </div>
+      <div class="summary-card">
+        <span th:text="${filtered ? 'Resultados' : 'Derivaciones'}">Derivaciones</span>
+        <strong th:text="${totalReferrals}">0</strong>
+      </div>
+    </div>
+    <section class="panel" aria-labelledby="referrals-title">
+      <div class="panel-heading">
+        <h2 id="referrals-title">Derivaciones asignadas</h2>
+        <span class="subtle-label" th:text="${isSupervisor ? 'Más antiguas primero' : 'Más recientes primero'}">Orden de los casos</span>
+      </div>
+      <form class="panel-body inbox-filters" method="get" th:action="@{/}" role="search" aria-label="Buscar y filtrar derivaciones">
+        <div class="field">
+          <label for="inbox-query">Identificador o RUT</label>
+          <input id="inbox-query" name="q" type="search" maxlength="35" th:value="${query}" placeholder="DER-12 o 12.345.678-5"
+            th:classappend="${searchError != null} ? 'is-invalid'"
+            th:attr="aria-invalid=${searchError != null ? 'true' : null},aria-describedby=${searchError != null ? 'inbox-query-help inbox-query-error' : 'inbox-query-help'}">
+          <p id="inbox-query-help" class="field-help">Casos: DER-12. RUT con o sin puntos y guion.</p>
+          <p id="inbox-query-error" class="field-error" th:if="${searchError != null}" th:text="${searchError}"></p>
+        </div>
+        <div class="field">
+          <label for="inbox-state">Estado</label>
+          <select id="inbox-state" name="state">
+            <option value="0">Todos</option>
+            <option th:each="state : ${states}" th:value="${state.id}" th:text="${state.name}" th:selected="${state.id == selectedState}"></option>
+          </select>
+        </div>
+        <div class="field" th:if="${isSupervisor}">
+          <label for="inbox-executive">Ejecutivo</label>
+          <select id="inbox-executive" name="executive">
+            <option value="0">Todos</option>
+            <option th:each="executive : ${executives}" th:value="${executive.id}" th:text="${executive.name}" th:selected="${executive.id == selectedExecutive}"></option>
+          </select>
+        </div>
+        <div class="inbox-actions">
+          <button type="submit" class="button button-secondary">Buscar</button>
+          <a class="button button-quiet" th:if="${filtered}" th:href="@{/}">Limpiar</a>
+        </div>
+      </form>
+      <div class="empty-state" th:if="${#lists.isEmpty(referrals)}">
+        <span class="empty-symbol" aria-hidden="true">↗</span>
+        <h3 th:text="${filtered || page.totalElements > 0 ? 'Sin resultados en esta página' : 'Aún no hay derivaciones asignadas'}">Aún no hay derivaciones asignadas</h3>
+        <p th:text="${filtered ? 'Prueba con otro identificador, RUT o filtro.' : (page.totalElements > 0 ? 'Vuelve a una página anterior.' : 'Los casos aparecerán aquí cuando estén registrados.')}"></p>
+      </div>
+      <div class="table-scroll" role="region" aria-labelledby="referrals-title" tabindex="0" th:unless="${#lists.isEmpty(referrals)}">
+        <table>
+          <thead><tr>
+            <th scope="col">Identificador</th><th scope="col">Interesado</th>
+            <th scope="col" th:if="${isSupervisor}">Ejecutivo</th>
+            <th scope="col">Estado</th><th scope="col">Fecha de creación</th>
+          </tr></thead>
+          <tbody>
+            <tr th:each="referral : ${referrals}">
+              <td><a class="case-link" th:href="@{/referrals/{id}(id=${referral.id})}"><span class="case-code" th:text="${'DER-' + referral.id}">DER-1</span></a></td>
+              <td th:text="${referral.leadName}">Nombre del interesado</td>
+              <td th:if="${isSupervisor}" th:text="${referral.executiveName}">Ejecutivo</td>
+              <td><span class="status" th:attr="data-status=${referral.statusName == 'Aprobada' ? 'approved' : referral.statusName == 'Rechazada' ? 'rejected' : referral.statusName == 'Desistida' ? 'withdrawn' : referral.statusName == 'Pendiente de recepción' ? 'pending-receipt' : 'other'}" th:text="${referral.statusName}">Pendiente de recepción</span></td>
+              <td class="nowrap" th:text="${#temporals.format(referral.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2026 10:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <nav class="inbox-pagination panel-body" th:if="${page.totalPages > 1 || page.hasPrevious()}" aria-label="Páginas de derivaciones">
+        <a class="button button-quiet" th:if="${page.hasPrevious()}" th:href="@{/(q=${query},state=${selectedState},executive=${selectedExecutive},page=${page.number - 1})}">Anterior</a>
+        <span th:if="${page.number < page.totalPages}" th:text="${'Página ' + (page.number + 1) + ' de ' + page.totalPages}">Página 1 de 2</span>
+        <a class="button button-quiet" th:if="${page.hasNext()}" th:href="@{/(q=${query},state=${selectedState},executive=${selectedExecutive},page=${page.number + 1})}">Siguiente</a>
+      </nav>
+    </section>
+  </main>
+  <div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

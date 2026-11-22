@@ -1,0 +1,8 @@
+{
+  "DB_URL": "jdbc:postgresql://127.0.0.1:5432/mortgage_referrals_eval2",
+  "DB_USERNAME": "mortgage_referrals_app",
+  "DB_PASSWORD": "",
+  "BOOTSTRAP_SUPERVISOR_EMAIL": "supervisora@demo.invalid",
+  "BOOTSTRAP_SUPERVISOR_NAME": "Supervisora de demostración",
+  "BOOTSTRAP_SUPERVISOR_PASSWORD": ""
+}

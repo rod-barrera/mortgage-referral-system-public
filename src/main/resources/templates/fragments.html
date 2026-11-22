@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="app-header" th:fragment="header(account, activePage)">
+  <div class="header-inner">
+    <a class="brand" th:href="@{/}" aria-label="Seguimiento hipotecario, inicio">
+      <span class="brand-mark" aria-hidden="true">SH</span>
+      <span>Seguimiento<span class="brand-subtitle">hipotecario</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a th:href="@{/}" th:classappend="${activePage == 'home'} ? 'is-current'" th:attr="aria-current=${activePage == 'home' ? 'page' : null}">Mi bandeja</a>
+      <a th:if="${account.role == 'EXECUTIVE'}" th:href="@{/leads}" th:classappend="${activePage == 'leads'} ? 'is-current'" th:attr="aria-current=${activePage == 'leads' ? 'page' : null}">Nueva derivación</a>
+      <a th:if="${account.role == 'SUPERVISOR'}" th:href="@{/users}" th:classappend="${activePage == 'users'} ? 'is-current'" th:attr="aria-current=${activePage == 'users' ? 'page' : null}">Cuentas de ejecutivos</a>
+      <a th:href="@{/profile}" th:classappend="${activePage == 'profile'} ? 'is-current'" th:attr="aria-current=${activePage == 'profile' ? 'page' : null}">Mi perfil</a>
+    </nav>
+    <div class="account-area">
+      <div class="account-label"><strong th:text="${account.name}">Nombre</strong><span th:text="${account.role == 'SUPERVISOR' ? 'Supervisora' : 'Ejecutivo'}">Perfil</span></div>
+      <form th:action="@{/logout}" method="post"><button class="button button-quiet" type="submit">Cerrar sesión</button></form>
+    </div>
+  </div>
+</header>
+<footer class="app-footer" th:fragment="footer">Seguimiento de consultas hipotecarias</footer>
+</body>
+</html>

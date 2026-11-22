@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cuentas de ejecutivos | Seguimiento hipotecario</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <script defer th:src="@{/js/app.js}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Ir al contenido</a>
+  <div th:replace="~{fragments :: header(${account}, 'users')}"></div>
+  <main id="content" class="page-shell">
+    <div class="page-heading"><div><p class="eyebrow">Supervisión</p><h1>Cuentas de ejecutivos</h1><p class="section-description">Crea cuentas y administra su acceso al seguimiento.</p></div></div>
+    <div class="alert alert-success" th:if="${param.created != null}" role="status">La cuenta del ejecutivo se creó correctamente.</div>
+    <div class="alert alert-success" th:if="${param.updated != null}" role="status">El estado de la cuenta se actualizó correctamente.</div>
+    <div class="alert alert-success" th:if="${param.edited != null}" role="status">Los datos de la cuenta se actualizaron correctamente.</div>
+    <div class="management-grid">
+      <section class="panel create-panel" aria-labelledby="create-user-title">
+        <div class="panel-heading"><div><h2 id="create-user-title">Crear cuenta</h2><p class="section-description">La nueva cuenta tendrá el perfil Ejecutivo.</p></div></div>
+        <form th:action="@{/users}" th:object="${form}" method="post" class="form-stack panel-body">
+          <div class="alert alert-error" th:if="${#fields.hasGlobalErrors()}" role="alert"><p th:each="error : ${#fields.globalErrors()}" th:text="${error}">No se pudo crear la cuenta.</p></div>
+          <div class="field"><label for="name">Nombre completo</label><input id="name" th:field="*{name}" type="text" required maxlength="120" autocomplete="name" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('name')}" aria-describedby="name-error"><p id="name-error" class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Revisa el nombre.</p></div>
+          <div class="field"><label for="email">Correo electrónico</label><input id="email" th:field="*{email}" type="email" required maxlength="254" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" th:errorclass="is-invalid" th:attr="aria-invalid=${#fields.hasErrors('email')}" aria-describedby="email-error"><p id="email-error" class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Revisa el correo.</p></div>
+          <div class="field"><label for="new-password">Contraseña inicial</label><div class="password-control"><input id="new-password" name="password" type="password" required minlength="10" maxlength="72" autocomplete="new-password" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" th:attr="aria-invalid=${#fields.hasErrors('password')}" aria-describedby="password-help password-error"><button class="password-toggle" type="button" data-toggle-password="new-password" aria-controls="new-password" aria-pressed="false" aria-label="Mostrar contraseña" hidden>Mostrar</button></div><p id="password-help" class="field-help">Mínimo 10 caracteres. Usa una contraseña distinta para cada cuenta.</p><p id="password-error" class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Revisa la contraseña.</p></div>
+          <button class="button button-primary" type="submit">Crear cuenta de ejecutivo</button>
+        </form>
+      </section>
+      <section class="panel accounts-panel" aria-labelledby="users-title">
+        <div class="panel-heading"><div><h2 id="users-title">Cuentas registradas</h2><p class="section-description">Una cuenta desactivada conserva sus registros.</p></div></div>
+        <div class="table-scroll" role="region" aria-labelledby="users-title" tabindex="0">
+          <table>
+            <thead>
+              <tr><th scope="col">Persona</th><th scope="col">Perfil</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr th:each="user : ${users}">
+                <td><strong class="table-name" th:text="${user.name}">Nombre</strong><span class="table-detail" th:text="${user.email}">correo</span></td>
+                <td th:text="${user.role == 'SUPERVISOR' ? 'Supervisora' : 'Ejecutivo'}">Ejecutivo</td>
+                <td><span class="status" th:classappend="${user.active} ? 'status--success' : 'status--muted'" th:text="${user.active ? 'Activa' : 'Inactiva'}">Activa</span></td>
+                <td>
+                  <div class="form-actions" th:if="${user.role == 'EXECUTIVE'}">
+                    <a class="button button-small button-secondary" th:href="@{/users/{id}/edit(id=${user.id})}"
+                       th:attr="aria-label=|Editar la cuenta de ${user.name}|">Editar</a>
+                    <form th:action="@{/users/{id}/status(id=${user.id})}" method="post"
+                          th:attr="data-confirm=${user.active ? '¿Desactivar esta cuenta? La persona dejará de tener acceso al sistema.' : null}">
+                      <input type="hidden" name="active" th:value="${!user.active}">
+                      <button class="button button-small button-secondary" type="submit" th:text="${user.active ? 'Desactivar' : 'Activar'}"
+                              th:attr="aria-label=${(user.active ? 'Desactivar la cuenta de ' : 'Activar la cuenta de ') + user.name}">Desactivar</button>
+                    </form>
+                  </div>
+                  <span class="subtle-label" th:if="${user.role == 'SUPERVISOR'}">Supervisión</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
